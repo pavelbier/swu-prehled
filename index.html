@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SWU Leader Přehled</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: briefing sheet — hero s top 8, pak dvě přepínatelné tabulky s vyhledáváním */
+:root{
+  --bg:#f3f4f7; --surface:#ffffff; --fg:#14161d; --muted:#5d6273; --line:#dcdfe7;
+  --accent:#2f5bd8; --accent-soft:#e3e9fb; --gold:#b98a1c;
+  --vig:#2f6fd6; --cmd:#2f9a55; --agg:#d0393b; --cun:#d9a514; --neu:#8a8fa0;
+  --f-display:"Oxanium","Segoe UI",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1017; --surface:#171a24; --fg:#e8eaf1; --muted:#9298ab; --line:#2a2e3c;
+  --accent:#7b9cff; --accent-soft:#1f2741; --gold:#e2b64a;
+  --vig:#5b93f0; --cmd:#4dbb73; --agg:#ef5f5f; --cun:#f0c13d; --neu:#7d8296; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1017; --surface:#171a24; --fg:#e8eaf1; --muted:#9298ab; --line:#2a2e3c;
+  --accent:#7b9cff; --accent-soft:#1f2741; --gold:#e2b64a;
+  --vig:#5b93f0; --cmd:#4dbb73; --agg:#ef5f5f; --cun:#f0c13d; --neu:#7d8296; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:40px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin:6px 0 10px;text-wrap:balance;letter-spacing:-.01em}
+h2{font-family:var(--f-display);font-weight:700;font-size:1.4rem;margin:0;text-wrap:balance}
+.lede{color:var(--muted);max-width:62ch;margin:0}
+.stats{display:flex;flex-wrap:wrap;gap:28px;margin-top:22px}
+.stat b{display:block;font-family:var(--f-display);font-size:1.9rem;font-weight:700;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+/* top 8 */
+.top8{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.slot{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:6px;text-decoration:none;color:inherit;transition:border-color .15s,transform .15s}
+.slot:hover,.slot:focus-visible{border-color:var(--accent);transform:translateY(-2px);outline:none}
+.slot .rk{font-family:var(--f-display);font-weight:800;font-size:1.6rem;line-height:1;color:var(--muted);font-variant-numeric:tabular-nums}
+.slot.r1 .rk{color:var(--gold)}
+.slot .ld{font-weight:600;line-height:1.25}
+.slot .pl{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+@media (max-width:820px){.top8{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* controls */
+.head{display:flex;flex-wrap:wrap;gap:14px;align-items:end;justify-content:space-between}
+.tabs{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;gap:4px}
+.tabs button{font:600 14px var(--f-body);border:0;background:transparent;color:var(--muted);padding:8px 16px;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--surface)}
+.tabs button:focus-visible,#q:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#q{font:14px var(--f-body);background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;width:260px;max-width:100%}
+.note{font-size:13px;color:var(--muted);margin:6px 0 0}
+/* table */
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface)}
+td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--accent-soft)}
+td.rk{font-family:var(--f-display);font-weight:700;font-variant-numeric:tabular-nums;width:72px}
+td.rk.top{color:var(--gold)}
+td.ld{font-weight:600}
+.set{font-family:var(--f-mono);font-size:11px;color:var(--muted);margin-left:6px;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.base{display:inline-flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;flex:none;background:var(--neu)}
+.dot.vig{background:var(--vig)}.dot.cmd{background:var(--cmd)}.dot.agg{background:var(--agg)}.dot.cun{background:var(--cun)}
+.dot.sq{border-radius:2px;background:transparent;border:2px solid var(--neu)}
+td.pl{color:var(--muted)}
+a.deck{font-family:var(--f-mono);font-size:13px;color:var(--accent);text-decoration:none;white-space:nowrap}
+a.deck:hover{text-decoration:underline}
+.empty{padding:24px 16px;color:var(--muted)}
+footer{font-size:13px;color:var(--muted)}
+footer a{color:var(--accent)}
+@media (prefers-reduced-motion:reduce){.slot{transition:none}}
+</style>
+<style>body{margin:0}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Star Wars: Unlimited · Výsledky turnaje</div>
+    <h1>Kdo vládl metagamu</h1>
+    <p class="lede">Přehled leaderů a jejich bází podle nejlepšího umístění. Každý řádek vede přímo na decklist na SWU Competitive Hub.</p>
+    <div class="stats">
+      <div class="stat"><b>789</b><span>hráčů ve výsledcích</span></div>
+      <div class="stat"><b id="sLeaders">–</b><span>různých leaderů</span></div>
+      <div class="stat"><b id="sCombos">–</b><span>kombinací leader + base</span></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="t8">
+    <div class="head" style="margin-bottom:14px"><h2 id="t8">Top 8</h2></div>
+    <div class="top8" id="top8"></div>
+  </section>
+
+  <section aria-labelledby="tt">
+    <div class="head">
+      <div>
+        <h2 id="tt">Nejlepší umístění</h2>
+        <p class="note" id="note"></p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+        <div class="tabs" role="tablist">
+          <button role="tab" id="tabL" aria-selected="true">Leadeři</button>
+          <button role="tab" id="tabC" aria-selected="false">Leader + Base</button>
+        </div>
+        <input id="q" type="search" placeholder="Hledat leadera, base, hráče…" aria-label="Hledat">
+      </div>
+    </div>
+    <div class="tbl" style="margin-top:14px">
+      <table>
+        <thead><tr><th>#</th><th>Leader</th><th>Base</th><th>Hráč</th><th>Decklist</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden>Nic neodpovídá hledání. Zkuste jiný název leadera nebo hráče.</div>
+    </div>
+  </section>
+
+  <footer>Zdroj dat: <a href="https://www.swu-competitivehub.com" target="_blank" rel="noopener">swu-competitivehub.com</a>. Hráči s neznámým leaderem nejsou zahrnuti.</footer>
+</div>
+
+<script>
+const URL_BASE="https://www.swu-competitivehub.com/decklist/";
+const TOP8=[[1,"Wicket (HMW)","Green 27hp Multiaspect","BEO_Zahaphael",35552],[2,"Mother Talzin (LOF)","Mystic Monastery","BN_undefined",35553],[3,"Hemlock (HMW)","Yellow","CadeH13",35554],[4,"Hemlock (HMW)","Yellow","BMG_alexkrez",35555],[5,"Director Krennic (LAW)","Blue","AllyG_TT",35556],[6,"Han Solo (JTL)","Green","Dashrendar72",35557],[7,"Director Krennic (LAW)","Blue","FA_Nightbryd",35558],[8,"Wicket (HMW)","Green 27hp Multiaspect","MCG_Pasqwalle",35559]];
+const D=`1|Wicket (HMW)|Green 27hp Multiaspect|BEO_Zahaphael|35552
+2|Mother Talzin (LOF)|Mystic Monastery|BN_undefined|35553
+3|Hemlock (HMW)|Yellow|CadeH13|35554
+5|Director Krennic (LAW)|Blue|AllyG_TT|35556
+6|Han Solo (JTL)|Green|Dashrendar72|35557
+10|Lando Calrissian (LAW)|Blue|CCN_Gonso|35561
+14|Maul (HMW)|Blue|Hiere|35565
+15|Dedra Meero (SEC)|Colossus|BN_TeeMouse|35566
+16|Mother Talzin (LOF)|Yellow Force|BEO_WolfHalifax|35567
+18|Ahsoka Tano (ASH)|Yellow 27hp Multiaspect|SealeysonSW|35569
+20|Ahsoka Tano (ASH)|Alliance Outpost|TSF_mbo|35571
+31|Admiral Piett (JTL)|Blue 27hp Multiaspect|Licane|35582
+33|Kazuda Xiono (JTL)|Blue|Mathias Mikes|35584
+36|Tarfful (HMW)|Blue|daftside|35587
+38|Ahsoka Tano (ASH)|Yellow|Piscouman|35589
+39|Ahsoka Tano (ASH)|Nabat Village|Hibadino|35590
+41|Boba Fett (JTL)|Blue|CarsonCarusoSWU|35592
+47|Darth Maul (LOF)|Blue Force|papoudi|35598
+48|Hemlock (HMW)|Data Vault|O37_Kyzzy|35599
+49|Darth Vader (JTL)|Yellow|MrUntiltable|35600
+50|Greef Karga (ASH)|Red|NO_Rykyna|35601
+62|Boba Fett (JTL)|Lake Country|IVB_Darth_Xino|35613
+65|Admiral Sloane (ASH)|Blue|vincenzodisieno|35616
+68|Luke Skywalker (ASH)|Data Vault|Menicks|35619
+70|Jabba the Hutt (SEC)|Yellow|Kiyamoro|35621
+73|Ahsoka Tano (ASH)|Blue|PJTucker|35624
+74|Director Krennic (LAW)|Yellow|faifaigor|35625
+81|Obi-Wan Kenobi (LOF)|Yellow Force|Nicoodo|35632
+87|Luke Skywalker (ASH)|Green|Pabelou|35638
+88|Wicket (HMW)|Blue 27hp Multiaspect|Benjamin Münster|35639
+91|Hemlock (HMW)|Red|SteR27|35642
+95|Bossk (HMW)|Red|yungpope_TDM|35646
+104|Luke Skywalker (JTL)|Data Vault|ChickenAreEvil_TDM|35655
+105|Maul (HMW)|Data Vault|bjoxu|35656
+111|Grand Admiral Thrawn (JTL)|Yellow|AculNaej_NGNR|35662
+114|Lando Calrissian (LAW)|Colossus|BEO_PalpaGonJin|35665
+117|Greef Karga (ASH)|Data Vault|AndS15|35668
+120|Wicket (HMW)|Yellow|Eichbaum1907|35671
+121|Han Solo (LAW)|Blue Force|BTG_Djadmar|35672
+123|Wicket (HMW)|Green|Lattice|35674
+130|Major Vonreg (JTL)|Yellow 27hp Multiaspect|AU_Prawnheart|35681
+136|Director Krennic (LAW)|Blue 27hp Multiaspect|Péter Széplaki|35687
+137|Chewbacca (LAW)|Data Vault|Jorus|35688
+150|Boba Fett (JTL)|Yellow|shocto86|35701
+154|Mother Talzin (LOF)|Red Force|MKE_Pipette|35705
+162|Ahsoka Tano (ASH)|Blue 27hp Multiaspect|bowbark|35713
+164|Poe Dameron (JTL)|Citadel Research Center|GLHF_Sarumaaan|35715
+174|The Mandalorian (ASH)|Colossus|Torgin|35725
+178|Vel Sartha (LAW)|Red|BN_Ashergdf|35729
+183|Obi-Wan Kenobi (LOF)|Blue Force|BFF_fyre2k|35734
+237|Admiral Piett (JTL)|Blue|Simon Knecht|35788
+254|Third Sister (LOF)|Lake Country|WM_fcolos|35805
+270|Poggle (HMW)|Blue|Pieczar|35821
+281|Wicket (HMW)|Blue|MNK_MegaCorwin|35832
+293|Darth Sidious (HMW)|Blue|Peter Vincze|35844
+296|Dedra Meero (SEC)|Yellow|Supermario66_TDM|35847
+298|Kylo Ren (LOF)|Red|Jakob Wåhleman|35849
+299|Lama Su (SEC)|Data Vault|MaaV3|35850
+302|Qui-Gon Jinn (LOF)|Green Force|HyuGarona|35853
+310|Bossk (HMW)|Blue|Jupton|35861
+311|Lama Su (SEC)|Green|Miklimunnr|35862
+313|Dedra Meero (SEC)|Blue|DM_PDK|35864
+320|Ezra (ASH)|Data Vault|nheechi|35871
+327|Lando Calrissian (LAW)|Data Vault|Alberto Alonso Jimenez|35878
+328|Aurra Sing (LAW)|Data Vault|NGNR_Tumulari|35879
+342|Darth Vader (HMW)|Red|Capitainemorgan|35893
+344|Grand Admiral Thrawn (JTL)|Data Vault|FTC_DoubleA83|35895
+352|Wedge Antilles (JTL)|Yellow|Juleswolf2|35903
+353|Admiral Piett (JTL)|Red|edeph|35904
+358|Leia Organa (LAW)|Blue 27hp Multiaspect|Kellanved05|35909
+361|Chewbacca (LAW)|Alliance Outpost|AU_Cycnos|35912
+377|Poe Dameron (JTL)|Yellow|GS_Tapilor|35928
+380|Ahsoka Tano (ASH)|Red|HSP_Judith|35931
+381|Vane (ASH)|Yellow|Tomasz Dąbrowski|35932
+418|General Grievous (HMW)|Blue|Bibam|35969
+429|Boba Fett (LAW)|Yellow|Falconmonkey_DSP|35980
+436|Cassian Andor (SEC)|Yellow|Jolabricot|35987
+444|Vane (ASH)|Green|Soplico|35995
+448|Darth Sidious (HMW)|Green 27hp Multiaspect|Vexation|35999
+449|Han Solo (JTL)|Green 27hp Multiaspect|Istvan Laczi|36000
+470|Luke Skywalker (JTL)|Green|Baffo139|36021
+473|Obi-Wan Kenobi (LOF)|Mystic Monastery|Servetz|36024
+483|Ezra (ASH)|Blue 27hp Multiaspect|dannyketchum110|36034
+484|Jyn Erso (LAW)|Red 27hp Multiaspect|jakobano|36035
+487|Maz Kanata (HMW)|Alliance Outpost|michael nguyen|36038
+492|Padmé Amidala (SEC)|Red|E06_Untxia|36043
+494|Chewbacca (HMW)|Blue|BEO_Gui28|36045
+501|Grand Admiral Thrawn (ASH)|Red|Céline Matter|36052
+502|The Armorer (ASH)|Yellow|Arundo|36053
+507|Wedge Antilles (JTL)|Citadel Research Center|Udini68|36058
+514|Sabine Wren (ASH)|Data Vault|JacobKatzeff|36065
+527|Kazuda Xiono (JTL)|Red|Chris7016|36078
+529|Darth Vader (HMW)|Yellow|SirJonas|36080
+534|Admiral Ackbar (JTL)|Data Vault|danbal|36085
+539|General Grievous (HMW)|Red|WS_Dymlos|36090
+541|Snoke (LOF)|Yellow|MM_ObiJuan|36092
+550|Greef Karga (ASH)|Green|ThomRawson|36101
+551|Shin Hati (ASH)|Red|WS_Zanghjiao|36102
+553|Asajj Ventress (JTL)|Yellow|8rot|36104
+563|Darth Vader (LAW)|Yellow|KemuJurtsi|36114
+575|Admiral Trench (JTL)|Green|MarkPaap|36126
+582|Kazuda Xiono (JTL)|Blue 27hp Multiaspect|MKE_Gedelendil|36133
+591|Admiral Sloane (ASH)|Blue 27hp Multiaspect|Timm43|36142
+592|The Client (LAW)|Blue|Jeri_vom_Wienerberg|36143
+594|The Warrior (HMW)|Red|HSP_Custos|36145
+597|Luke Skywalker (ASH)|Red|BX_DroidCommando|36148
+616|Ezra (ASH)|Yellow|JediJulian|36167
+617|Ahsoka Tano (ASH)|Red 27hp Multiaspect|Eric Victor|36168
+634|Hera Syndulla (LAW)|Blue 27hp Multiaspect|Jenny Hohmann|36185
+657|Kazuda Xiono (JTL)|Red 27hp Multiaspect|Johnny Poulsen|36208
+659|Moff Tarkin (HMW)|Red|BTG_MastruWasBeer|36210
+660|Vane (ASH)|Yellow 27hp Multiaspect|Pandamies|36211
+661|Sabé (SEC)|Data Vault|Craisu|36212
+662|Jar Jar Binks (HMW)|Green|JITaylor1992|36213
+663|Colonel Yularen (SEC)|Red|RollRobin|36214
+666|Hemlock (HMW)|Green|57LFred57|36217
+685|General Grievous (HMW)|Blue 27hp Multiaspect|vincineuze|36236
+723|Asajj Ventress (HMW)|Yellow|SpiderByte|36274
+733|Admiral Piett (JTL)|Red 27hp Multiaspect|Jurian76|36284
+748|Vane (ASH)|Blue 27hp Multiaspect|Grazz|36299
+749|Snoke (LOF)|Blue|MISFIT620|36300
+766|Director Krennic (LAW)|Colossus|KamilSerafin|36317`;
+const COMBOS=D.split("\n").map(l=>{const[r,ld,b,p,d]=l.split("|");return{r:+r,ld,b,p,d:+d}});
+const seen=new Set(),LEADERS=COMBOS.filter(c=>!seen.has(c.ld)&&seen.add(c.ld));
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function dotClass(b){
+  if(/^Blue/.test(b))return"vig"; if(/^Green/.test(b))return"cmd";
+  if(/^Red/.test(b))return"agg"; if(/^Yellow/.test(b))return"cun"; return"sq";
+}
+function leaderHTML(ld){const m=ld.match(/^(.*) \((\w+)\)$/);return m?esc(m[1])+`<span class="set">${m[2]}</span>`:esc(ld)}
+document.getElementById("sLeaders").textContent=LEADERS.length;
+document.getElementById("sCombos").textContent=COMBOS.length;
+document.getElementById("top8").innerHTML=TOP8.map(([r,ld,b,p,d])=>`<a class="slot r${r}" href="${URL_BASE}${d}/" target="_blank" rel="noopener"><span class="rk">#${r}</span><span class="ld">${leaderHTML(ld)}</span><span class="base"><span class="dot ${dotClass(b)}"></span>${esc(b)}</span><span class="pl">${esc(p)}</span></a>`).join("");
+let mode="L";
+const rowsEl=document.getElementById("rows"),q=document.getElementById("q"),empty=document.getElementById("empty"),note=document.getElementById("note");
+function render(){
+  const data=mode==="L"?LEADERS:COMBOS,t=q.value.trim().toLowerCase();
+  const list=t?data.filter(c=>(c.ld+" "+c.b+" "+c.p).toLowerCase().includes(t)):data;
+  note.textContent=mode==="L"?`${LEADERS.length} leaderů, každý se svým nejlepším výsledkem`:`${COMBOS.length} kombinací, každá se svým nejlepším výsledkem`;
+  rowsEl.innerHTML=list.map(c=>`<tr><td class="rk${c.r<=8?" top":""}">${c.r}</td><td class="ld">${leaderHTML(c.ld)}</td><td><span class="base"><span class="dot ${dotClass(c.b)}"></span>${esc(c.b)}</span></td><td class="pl">${esc(c.p)}</td><td><a class="deck" href="${URL_BASE}${c.d}/" target="_blank" rel="noopener">Deck ${c.d} ↗</a></td></tr>`).join("");
+  empty.hidden=list.length>0;
+}
+function setMode(m){mode=m;document.getElementById("tabL").setAttribute("aria-selected",m==="L");document.getElementById("tabC").setAttribute("aria-selected",m==="C");render()}
+document.getElementById("tabL").onclick=()=>setMode("L");
+document.getElementById("tabC").onclick=()=>setMode("C");
+q.oninput=render;
+render();
+</script>
+</body>
+</html>
